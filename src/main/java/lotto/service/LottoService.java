@@ -1,5 +1,7 @@
 package lotto.service;
 
+import lotto.dto.response.PurchaseHistory;
+import lotto.dto.request.NumberRequest;
 import lotto.model.*;
 import lotto.service.util.LottoMaker;
 
@@ -12,25 +14,33 @@ public class LottoService {
         this.lottoMaker = lottoMaker;
     }
 
-    public Statistics calculateResult(List<Integer> winningNumberRequest, int bonusNumberRequest, int purchaseAmount) {
-        createLottoBundle(getTicketCount(purchaseAmount));
-        Answer answer = new Answer(winningNumberRequest, bonusNumberRequest);
-        EnumMap<Rank, Integer> rankResult = LottoRepository.calculateRankCount(answer);
-        return new Statistics(rankResult, purchaseAmount);
+    public PurchaseHistory getLottoTickets(NumberRequest purchaseAmount) {
+        int lottoCount = getTicketCount(purchaseAmount.getNumber());
+        LottoRepository lottoRepository = LottoRepository.of(createLottoBundle(lottoCount));
+        return new PurchaseHistory(lottoRepository.getLottoBundle());
     }
 
-    private void createLottoBundle(int lottoCount) {
+/*    public Statistics calculateResult(List<Integer> winningNumberRequest, int bonusNumberRequest, int purchaseAmount) {
+        int lottoCount = getTicketCount(purchaseAmount);
+        LottoRepository lottoRepository = LottoRepository.of(createLottoBundle(lottoCount));
+        Answer answer = new Answer(winningNumberRequest, bonusNumberRequest);
+        EnumMap<Rank, Integer> rankResult = lottoRepository.calculateRankCount(answer);
+        return new Statistics(rankResult, purchaseAmount);
+    }*/
+
+    private List<Lotto> createLottoBundle(int lottoCount) {
+        List<Lotto> lottoBundle = new ArrayList<>();
         for (int i = 0; i < lottoCount; i++) {
-            createLotto();
+            lottoBundle.add(createLotto());
         }
+        return lottoBundle;
     }
 
     private static int getTicketCount(int purchaseAmount) {
         return purchaseAmount / Ticket.PRICE;
     }
 
-    private void createLotto() {
-        Lotto lotto = Lotto.of(lottoMaker.createLottoNumbers());
-        LottoRepository.addLotto(lotto);
+    private Lotto createLotto() {
+        return Lotto.of(lottoMaker.createLottoNumbers());
     }
 }
