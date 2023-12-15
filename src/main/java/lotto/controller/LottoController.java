@@ -20,40 +20,37 @@ public class LottoController {
     }
 
     public void start() {
-        makeTicket();
-        makeResult();
+        runMethod(this::makeTicket);
+        runMethod(this::makeResult);
         inputView.readClose();
     }
 
     private void makeResult() {
-        while (true) {
-            try {
-                MultipleNumberRequest winningNumbers = getValidRequest(inputView::readWinningNumbers);
-                NumberRequest bonusNumber = getValidRequest(inputView::readBonusNumber);
-                outputView.showStatistics(lottoService.calculateResult(winningNumbers, bonusNumber));
-                break;
-            } catch (IllegalArgumentException e) {
-                outputView.printMessage(e.getMessage());
-            }
-        }
+        MultipleNumberRequest winningNumbers = getValidRequest(inputView::readWinningNumbers);
+        NumberRequest bonusNumber = getValidRequest(inputView::readBonusNumber);
+        outputView.showStatistics(lottoService.calculateResult(winningNumbers, bonusNumber));
     }
 
     private void makeTicket() {
-        while (true) {
-            try {
-                NumberRequest purchaseAmount = getValidRequest(inputView::readPurchaseAmount);
-                outputView.showPurchaseHistory(lottoService.getLottoTickets(purchaseAmount));
-                break;
-            } catch (IllegalArgumentException e) {
-                outputView.printMessage(e.getMessage());
-            }
-        }
+        NumberRequest purchaseAmount = getValidRequest(inputView::readPurchaseAmount);
+        outputView.showPurchaseHistory(lottoService.getLottoTickets(purchaseAmount));
     }
 
     private <T> T getValidRequest(Supplier<T> inputSupplier) {
         while (true) {
             try {
                 return inputSupplier.get();
+            } catch (IllegalArgumentException e) {
+                outputView.printMessage(e.getMessage());
+            }
+        }
+    }
+
+    private void runMethod(Runnable function) {
+        while (true) {
+            try {
+                function.run();
+                break;
             } catch (IllegalArgumentException e) {
                 outputView.printMessage(e.getMessage());
             }
