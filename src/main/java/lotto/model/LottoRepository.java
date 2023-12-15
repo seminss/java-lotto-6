@@ -17,7 +17,7 @@ public class LottoRepository {
         return Collections.unmodifiableList(lottoBundle);
     }
 
-    public EnumMap<Rank, Integer> calculateRankCount(Answer answer) {
+    public EnumMap<Rank, Integer> calculateCountPerRank(Answer answer) {
         EnumMap<Rank, Integer> rankMap = new EnumMap<>(Rank.class);
         initializeRankAndCount(rankMap);
         for (Lotto lotto : lottoBundle) {
