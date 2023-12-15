@@ -10,7 +10,7 @@ import java.util.StringJoiner;
 
 public class OutputView {
     DecimalFormat priceFormat = new DecimalFormat("#,###");
-    DecimalFormat profitFormat = new DecimalFormat("#.##");
+    DecimalFormat profitFormat = new DecimalFormat("#,###.##");
     StringBuilder sb = new StringBuilder();
     StringJoiner sj = new StringJoiner(", ");
 
@@ -21,6 +21,7 @@ public class OutputView {
 
     private void printByBoxFormat(List<Integer> numbers) {
         sb = new StringBuilder();
+        sj = new StringJoiner(", ");
         sb.append("[");
         numbers.forEach(number -> sj.add(String.valueOf(number)));
         sb.append(sj.toString());
@@ -35,28 +36,32 @@ public class OutputView {
             if (rank == Rank.MISS) {
                 continue;
             }
+            Integer matchCount = calculateResult.getRankResult().get(rank);
             if (rank == Rank.SECOND) {
-                sb.append(formatSecondRankMessage(rank, rank.getMatchCount(), rank.getWinningMoney()));
+                sb.append(formatSecondRankMessage(rank.getMatchCount(), rank.getWinningMoney(), matchCount));
                 continue;
             }
-            sb.append(formatDefaultRankMessage(rank, rank.getMatchCount(), rank.getWinningMoney()));
+            sb.append(formatDefaultRankMessage(rank.getMatchCount(), rank.getWinningMoney(),matchCount));
         }
-        sb.append(formatProfitRateMessage(calculateResult));
+        sb.append(formatProfitRateMessage(calculateResult.getProfitRate()));
         System.out.println(sb.toString());
     }
 
-    private String formatProfitRateMessage(Statistics calculateResult) {
-        return String.format("총 수익률은 %s%%입니다.", profitFormat.format(calculateResult.getProfitRate()));
+    private String formatProfitRateMessage(double ProfitRate){
+        return String.format("총 수익률은 %s%%입니다.", profitFormat.format(ProfitRate));
     }
 
-    private String formatDefaultRankMessage(Rank rank, int count, int winningMoney) {
+    private String formatDefaultRankMessage(int rankNumber,  int winningMoney, int matchCount) {
         String formattedWinningMoney = priceFormat.format(winningMoney);
-        return String.format("%d개 일치 (%s원) - %d개\n", rank.getMatchCount(), formattedWinningMoney, count);
+        return String.format("%d개 일치 (%s원) - %d개\n", rankNumber, formattedWinningMoney, matchCount);
     }
 
-    private String formatSecondRankMessage(Rank rank, int count, int winningMoney) {
+    private String formatSecondRankMessage(int rankNumber,  int winningMoney, int matchCount) {
         String formattedWinningMoney = priceFormat.format(winningMoney);
-        return String.format("%d개, 보너스 볼 일치 (%s원) - %d개\n", rank.getMatchCount(), formattedWinningMoney, count);
+        return String.format("%d개 일치, 보너스 볼 일치 (%s원) - %d개\n", rankNumber, formattedWinningMoney, matchCount);
     }
 
+    public void printMessage(String message) {
+        System.out.println(message);
+    }
 }

@@ -26,7 +26,7 @@ public class LottoService {
     public Statistics calculateResult(MultipleNumberRequest winningNumberRequest,
                                       NumberRequest bonusNumberRequest, NumberRequest purchaseAmount) {
         Answer answer = new Answer(winningNumberRequest.getMultipleNumber(), bonusNumberRequest.getNumber());
-        EnumMap<Rank, Integer> rankResult = lottoRepository.calculateRankCount(answer);
+        EnumMap<Rank, Integer> rankResult = lottoRepository.calculateCountPerRank(answer);
         double profit = calculateProfitRate(rankResult, purchaseAmount.getNumber());
         return new Statistics(rankResult, profit);
     }
@@ -39,7 +39,7 @@ public class LottoService {
         return lottoBundle;
     }
 
-    private static int getTicketCount(int purchaseAmount) {
+    private int getTicketCount(int purchaseAmount) {
         return purchaseAmount / Ticket.PRICE;
     }
 
@@ -52,6 +52,7 @@ public class LottoService {
         for (Rank rank : Rank.values()) {
             totalPrize += rank.calculateWinningMoney(rankResult.get(rank));
         }
-        return (double) (totalPrize / purchaseAmount) * 100;
+        System.out.println(totalPrize);
+        return (double) totalPrize / purchaseAmount * 100;
     }
 }
