@@ -3,8 +3,8 @@ package lotto.controller;
 import lotto.dto.request.MultipleNumberRequest;
 import lotto.dto.request.NumberRequest;
 import lotto.service.LottoService;
-import lotto.view.input.InputView;
-import lotto.view.input.OutputView;
+import lotto.view.InputView;
+import lotto.view.OutputView;
 
 import java.util.function.Supplier;
 
@@ -20,21 +20,29 @@ public class LottoController {
     }
 
     public void start() {
-        while (true) {
-            try {
-                NumberRequest purchaseAmount = getValidRequest(inputView::readPurchaseAmount);
-                outputView.showPurchaseHistory(lottoService.getLottoTickets(purchaseAmount));
-                break;
-            } catch (IllegalArgumentException e) {
-                outputView.printMessage(e.getMessage());
-            }
-        }
+        makeTicket();
+        makeResult();
+        inputView.readClose();
+    }
 
+    private void makeResult() {
         while (true) {
             try {
                 MultipleNumberRequest winningNumbers = getValidRequest(inputView::readWinningNumbers);
                 NumberRequest bonusNumber = getValidRequest(inputView::readBonusNumber);
                 outputView.showStatistics(lottoService.calculateResult(winningNumbers, bonusNumber));
+                break;
+            } catch (IllegalArgumentException e) {
+                outputView.printMessage(e.getMessage());
+            }
+        }
+    }
+
+    private void makeTicket() {
+        while (true) {
+            try {
+                NumberRequest purchaseAmount = getValidRequest(inputView::readPurchaseAmount);
+                outputView.showPurchaseHistory(lottoService.getLottoTickets(purchaseAmount));
                 break;
             } catch (IllegalArgumentException e) {
                 outputView.printMessage(e.getMessage());

@@ -1,4 +1,4 @@
-package lotto.view.input;
+package lotto.view;
 
 import lotto.dto.response.PurchaseHistory;
 import lotto.dto.response.Statistics;
@@ -30,8 +30,7 @@ public class OutputView {
     }
 
     public void showStatistics(Statistics calculateResult) {
-        sb = new StringBuilder();
-        sb.append("\n당첨 통계\n---\n");
+        sb = new StringBuilder().append("\n당첨 통계\n---\n");
         for (Rank rank : Rank.values()) {
             if (rank == Rank.MISS) {
                 continue;
@@ -41,22 +40,22 @@ public class OutputView {
                 sb.append(formatSecondRankMessage(rank.getMatchCount(), rank.getWinningMoney(), matchCount));
                 continue;
             }
-            sb.append(formatDefaultRankMessage(rank.getMatchCount(), rank.getWinningMoney(),matchCount));
+            sb.append(formatDefaultRankMessage(rank.getMatchCount(), rank.getWinningMoney(), matchCount));
         }
         sb.append(formatProfitRateMessage(calculateResult.getProfitRate()));
         System.out.println(sb.toString());
     }
 
-    private String formatProfitRateMessage(double ProfitRate){
+    private String formatProfitRateMessage(double ProfitRate) {
         return String.format("총 수익률은 %s%%입니다.", profitFormat.format(ProfitRate));
     }
 
-    private String formatDefaultRankMessage(int rankNumber,  int winningMoney, int matchCount) {
+    private String formatDefaultRankMessage(int rankNumber, int winningMoney, int matchCount) {
         String formattedWinningMoney = priceFormat.format(winningMoney);
         return String.format("%d개 일치 (%s원) - %d개\n", rankNumber, formattedWinningMoney, matchCount);
     }
 
-    private String formatSecondRankMessage(int rankNumber,  int winningMoney, int matchCount) {
+    private String formatSecondRankMessage(int rankNumber, int winningMoney, int matchCount) {
         String formattedWinningMoney = priceFormat.format(winningMoney);
         return String.format("%d개 일치, 보너스 볼 일치 (%s원) - %d개\n", rankNumber, formattedWinningMoney, matchCount);
     }

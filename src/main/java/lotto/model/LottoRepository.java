@@ -3,6 +3,8 @@ package lotto.model;
 import java.util.*;
 
 public class LottoRepository {
+    private static final Integer DEFAULT_NUMBER = 0;
+    private static final Integer ADD_NUMBER = 1;
     private List<Lotto> lottoBundle;
 
     private LottoRepository(List<Lotto> lottoBundle) {
@@ -24,14 +26,14 @@ public class LottoRepository {
             int matchCount = answer.getMatchCount(lotto);
             boolean bonusStatus = answer.matchBonus(lotto);
             Rank rank = Rank.of(matchCount, bonusStatus);
-            rankMap.put(rank, rankMap.get(rank) + 1);
+            rankMap.put(rank, rankMap.get(rank) + ADD_NUMBER);
         }
         return rankMap;
     }
 
     private void initializeRankAndCount(EnumMap<Rank, Integer> rankMap) {
         for (Rank rank : Rank.values()) {
-            rankMap.put(rank, 0);
+            rankMap.put(rank, DEFAULT_NUMBER);
         }
     }
 }

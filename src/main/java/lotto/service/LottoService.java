@@ -11,6 +11,9 @@ import lotto.service.util.LottoMaker;
 import java.util.*;
 
 public class LottoService {
+    private static final double PERCENT_MULTIPLIER = 100;
+    private static final Integer DEFAULT_NUMBER = 0;
+    private static final Integer ADD_NUMBER = 1;
     private final LottoMaker lottoMaker;
     private PurchaseAmount amount;
     private LottoRepository lottoRepository;
@@ -35,7 +38,7 @@ public class LottoService {
     private List<Lotto> createLottoBundle(PurchaseAmount amount) {
         int lottoCount = getTicketCount(amount.getAmount());
         List<Lotto> lottoBundle = new ArrayList<>();
-        for (int i = 0; i < lottoCount; i++) {
+        for (int i = DEFAULT_NUMBER; i < lottoCount; i += ADD_NUMBER) {
             lottoBundle.add(createLotto());
         }
         return lottoBundle;
@@ -50,10 +53,10 @@ public class LottoService {
     }
 
     private double calculateProfitRate(EnumMap<Rank, Integer> rankResult, int purchaseAmount) {
-        long totalPrize = 0;
+        long totalPrize = DEFAULT_NUMBER;
         for (Rank rank : Rank.values()) {
             totalPrize += rank.calculateWinningMoney(rankResult.get(rank));
         }
-        return (double) totalPrize / purchaseAmount * 100;
+        return (double) totalPrize / purchaseAmount * PERCENT_MULTIPLIER;
     }
 }

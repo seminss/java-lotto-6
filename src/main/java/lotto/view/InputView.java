@@ -1,4 +1,4 @@
-package lotto.view.input;
+package lotto.view;
 
 import camp.nextstep.edu.missionutils.Console;
 import lotto.dto.request.MultipleNumberRequest;

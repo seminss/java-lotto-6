@@ -3,8 +3,8 @@ package lotto;
 import lotto.controller.LottoController;
 import lotto.service.LottoService;
 import lotto.service.util.AutoLottoMaker;
-import lotto.view.input.InputView;
-import lotto.view.input.OutputView;
+import lotto.view.InputView;
+import lotto.view.OutputView;
 
 public class Application {
     public static void main(String[] args) {
