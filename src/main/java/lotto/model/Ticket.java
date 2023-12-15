@@ -7,6 +7,7 @@ public enum Ticket {
     LOTTO_NUMBER_MAX(45),
     ;
 
+    public static final int PRICE = LOTTO_PRICE.getValue();
     private final int value;
 
     Ticket(int value) {
@@ -15,9 +16,5 @@ public enum Ticket {
 
     public int getValue() {
         return value;
-    }
-
-    public int getLottoCount(int money) {
-        return money / value;
     }
 }
