@@ -10,11 +10,14 @@ public class Lotto {
         this.numbers = numbers;
     }
 
+    public static Lotto of(List<Integer> lottoNumbers) {
+        return new Lotto(lottoNumbers);
+    }
+
     private void validate(List<Integer> numbers) {
         if (numbers.size() != 6) {
             throw new IllegalArgumentException();
         }
     }
 
-    // TODO: 추가 기능 구현
 }

@@ -1,4 +1,4 @@
-package lotto.config;
+package lotto.model;
 
 public enum Ticket {
     LOTTO_PRICE(1000),
