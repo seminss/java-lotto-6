@@ -54,7 +54,6 @@ public class LottoService {
         for (Rank rank : Rank.values()) {
             totalPrize += rank.calculateWinningMoney(rankResult.get(rank));
         }
-        System.out.println(totalPrize);
         return (double) totalPrize / purchaseAmount * 100;
     }
 }

@@ -29,7 +29,7 @@ public class MultipleNumberRequest {
     }
 
     private void validateFormat(String userInput) {
-        if (!userInput.matches("^[0-9]+(,[0-9]+)*$")) {
+        if (!userInput.matches("^-?[0-9]+(,-?[0-9]+)*$")) {
             throw new LottoException("숫자가 쉼표로 구분 되어 있어야 합니다.");
         }
     }
