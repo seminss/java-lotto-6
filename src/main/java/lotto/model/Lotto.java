@@ -1,12 +1,15 @@
 package lotto.model;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class Lotto {
     private final List<Integer> numbers;
 
     public Lotto(List<Integer> numbers) {
         validate(numbers);
+        Collections.sort(numbers);
         this.numbers = numbers;
     }
 
@@ -22,5 +25,17 @@ public class Lotto {
 
     public List<Integer> getNumbers() {
         return numbers;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Lotto lotto)) return false;
+        return Objects.equals(getNumbers(), lotto.getNumbers());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getNumbers());
     }
 }
