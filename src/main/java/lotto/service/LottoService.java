@@ -5,12 +5,14 @@ import lotto.dto.response.PurchaseHistory;
 import lotto.dto.request.NumberRequest;
 import lotto.dto.response.Statistics;
 import lotto.model.*;
+import lotto.model.vo.PurchaseAmount;
 import lotto.service.util.LottoMaker;
 
 import java.util.*;
 
 public class LottoService {
     private final LottoMaker lottoMaker;
+    private PurchaseAmount amount;
     private LottoRepository lottoRepository;
 
     public LottoService(LottoMaker lottoMaker) {
@@ -18,20 +20,20 @@ public class LottoService {
     }
 
     public PurchaseHistory getLottoTickets(NumberRequest purchaseAmount) {
-        int lottoCount = getTicketCount(purchaseAmount.getNumber());
-        lottoRepository = LottoRepository.of(createLottoBundle(lottoCount));
+        amount = PurchaseAmount.of(purchaseAmount.getNumber());
+        lottoRepository = LottoRepository.of(createLottoBundle(amount));
         return new PurchaseHistory(lottoRepository.getLottoBundle());
     }
 
-    public Statistics calculateResult(MultipleNumberRequest winningNumberRequest,
-                                      NumberRequest bonusNumberRequest, NumberRequest purchaseAmount) {
+    public Statistics calculateResult(MultipleNumberRequest winningNumberRequest, NumberRequest bonusNumberRequest) {
         Answer answer = new Answer(winningNumberRequest.getMultipleNumber(), bonusNumberRequest.getNumber());
         EnumMap<Rank, Integer> rankResult = lottoRepository.calculateCountPerRank(answer);
-        double profit = calculateProfitRate(rankResult, purchaseAmount.getNumber());
+        double profit = calculateProfitRate(rankResult, amount.getAmount());
         return new Statistics(rankResult, profit);
     }
 
-    private List<Lotto> createLottoBundle(int lottoCount) {
+    private List<Lotto> createLottoBundle(PurchaseAmount amount) {
+        int lottoCount = getTicketCount(amount.getAmount());
         List<Lotto> lottoBundle = new ArrayList<>();
         for (int i = 0; i < lottoCount; i++) {
             lottoBundle.add(createLotto());

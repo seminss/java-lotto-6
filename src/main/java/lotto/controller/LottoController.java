@@ -26,7 +26,7 @@ public class LottoController {
                 outputView.showPurchaseHistory(lottoService.getLottoTickets(purchaseAmount));
                 MultipleNumberRequest winningNumbers = getValidRequest(inputView::readWinningNumbers);
                 NumberRequest bonusNumber = getValidRequest(inputView::readBonusNumber);
-                outputView.showStatistics(lottoService.calculateResult(winningNumbers, bonusNumber, purchaseAmount));
+                outputView.showStatistics(lottoService.calculateResult(winningNumbers, bonusNumber));
                 break;
             } catch (IllegalArgumentException e) {
                 outputView.printMessage(e.getMessage());
