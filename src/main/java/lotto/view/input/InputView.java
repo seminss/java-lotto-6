@@ -13,15 +13,15 @@ public class InputView {
     }
 
     public MultipleNumberRequest readWinningNumbers() {
-        System.out.println("당첨 번호를 입력해 주세요.");
+        System.out.println("\n당첨 번호를 입력해 주세요.");
         String userInput = read();
         return MultipleNumberRequest.of(userInput);
     }
 
-    public MultipleNumberRequest readBonusNumber() {
-        System.out.println("보너스 번호를 입력해 주세요.");
+    public NumberRequest readBonusNumber() {
+        System.out.println("\n보너스 번호를 입력해 주세요.");
         String userInput = read();
-        return MultipleNumberRequest.of(userInput);
+        return NumberRequest.of(userInput);
     }
 
     public void readClose() {

@@ -18,6 +18,10 @@ public class MultipleNumberRequest {
         return new MultipleNumberRequest(userInput);
     }
 
+    public List<Integer> getMultipleNumber() {
+        return multipleNumber;
+    }
+
     private void validateNotEmpty(String userInput) {
         if (userInput.isEmpty()) {
             throw new LottoException("입력 값이 없습니다.");
