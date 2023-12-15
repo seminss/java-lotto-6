@@ -9,9 +9,7 @@ import java.util.StringJoiner;
 public class OutputView {
     public void showPurchaseHistory(PurchaseHistory lottoTickets) {
         System.out.printf("\n%d개를 구매했습니다.\n", lottoTickets.getLottoBundle().size());
-        lottoTickets.getLottoBundle().forEach(bundle -> {
-            printByBoxFormat(bundle.getNumbers());
-        });
+        lottoTickets.getLottoBundle().forEach(bundle -> printByBoxFormat(bundle.getNumbers()));
     }
 
     private void printByBoxFormat(List<Integer> numbers) {
@@ -30,6 +28,6 @@ public class OutputView {
         calculateResult.getRankResult().forEach((rank, count) -> {
             System.out.println(rank.getMatchCount() + "개 일치 (" + rank.getWinningMoney() + "원) - " + count + "개");
         });
-        System.out.println("총 수익률은 " + calculateResult.getProfitRate() + "입니다.");
+        System.out.printf("총 수익률은 %.1f%%입니다.", calculateResult.getProfitRate());
     }
 }
